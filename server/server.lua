@@ -57,8 +57,6 @@ RegisterNetEvent('rsg-saloontender:server:resumeMusic', function(currentname, cu
 end)
 
 RegisterNetEvent('rsg-saloontender:server:stopMusic', function(currentname, currentzone)
-    print(currentname)
-    print(currentzone)
     local src = source
     local ped = GetPlayerPed(src)
     local coords = GetEntityCoords(ped)

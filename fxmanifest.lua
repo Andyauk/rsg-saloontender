@@ -20,7 +20,7 @@ shared_scripts {
 dependencies {
     'qr-core',
     'qr-menu',
-	'xsound'
+    'xsound'
 }
 
 lua54 'yes'

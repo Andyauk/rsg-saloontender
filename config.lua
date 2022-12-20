@@ -7,6 +7,8 @@ Config.Debug = false
 Config.JobRequired = 'saloontender'
 Config.StorageMaxWeight = 4000000
 Config.StorageMaxSlots = 48
+Config.DukeBoxDefaultVolume = 0.5 -- music default volume 0.01 - 1
+Config.DukeBoxRadius = 40 -- music radius
 
 -----------------------------------------------------------------------------------
 

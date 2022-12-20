@@ -1,5 +1,6 @@
 local QRCore = exports['qr-core']:GetCoreObject()
-local currentlocation
+local currentname
+local currentzone
 
 -----------------------------------------------------------------------------------
 
@@ -9,7 +10,7 @@ Citizen.CreateThread(function()
         exports['qr-core']:createPrompt(v.location, v.coords, QRCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
             type = 'client',
             event = 'rsg-saloontender:client:mainmenu',
-            args = { v.location },
+            args = { v.location, v.coords },
         })
         if v.showblip == true then
             local SaloonTenderBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.coords)
@@ -41,10 +42,11 @@ end)
 -----------------------------------------------------------------------------------
 
 -- saloontender menu
-RegisterNetEvent('rsg-saloontender:client:mainmenu', function(location)
+RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
     local job = QRCore.Functions.GetPlayerData().job.name
     if job == Config.JobRequired then
-        currentlocation = location
+        currentname = name
+        currentzone = zone
         exports['qr-menu']:openMenu({
             {
                 header = 'Saloon Tender',
@@ -56,6 +58,16 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(location)
                 icon = "fas fa-box",
                 params = {
                     event = 'rsg-saloontender:client:storage',
+                    isServer = false,
+                    args = {},
+                }
+            },
+            {
+                header = "DukeBox",
+                txt = "",
+                icon = "fas fa-music",
+                params = {
+                    event = 'rsg-saloontender:client:musicmenu',
                     isServer = false,
                     args = {},
                 }
@@ -151,3 +163,120 @@ AddEventHandler('rsg-saloontender:client:openwholesale', function()
 end)
 
 -----------------------------------------------------------------------------------
+
+RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
+    local name = currentname
+    local zone = currentzone
+    exports['qr-menu']:openMenu({
+        {
+            header = "💿 | DukeBox Menu",
+            isMenuHeader = true,
+        },
+        {
+            header = "🎶 | Play Music",
+            txt = "Enter a youtube URL",
+            params = {
+                event = "rsg-saloontender:client:playMusic",
+                isServer = false,
+                args = {},
+            }
+        },
+        {
+            header = "⏸️ | Pause Music",
+            txt = "Pause currently playing music",
+            params = {
+                event = "rsg-saloontender:client:pauseMusic",
+                isServer = false,
+                args = {},
+            }
+        },
+        {
+            header = "▶️ | Resume Music",
+            txt = "Resume playing paused music",
+            params = {
+                event = "rsg-saloontender:client:resumeMusic",
+                isServer = false,
+                args = {},
+            }
+        },
+        {
+            header = "🔈 | Change Volume",
+            txt = "Adjust the volume of the music",
+            params = {
+                event = "rsg-saloontender:client:changeVolume",
+                isServer = false,
+                args = {},
+            }
+        },
+        {
+            header = "❌ | Turn off music",
+            txt = "Stop the music & choose a new song",
+            params = {
+                event = "rsg-saloontender:client:stopMusic",
+                isServer = false,
+                args = {},
+            }
+        },
+        {
+            header = "<< Back",
+            txt = '',
+            params = {
+                event = 'rsg-saloontender:client:mainmenu',
+            }
+        },
+    })
+end)
+
+RegisterNetEvent('rsg-saloontender:client:playMusic', function()
+    local dialog = exports['qr-input']:ShowInput({
+        header = 'Song Selection',
+        submitText = "Submit",
+        inputs = {
+            {
+                type = 'text',
+                isRequired = true,
+                name = 'song',
+                text = 'YouTube URL'
+            }
+        }
+    })
+    if dialog then
+        if not dialog.song then return end
+        TriggerServerEvent('rsg-saloontender:server:playMusic', dialog.song, currentname, currentzone)
+    end
+end)
+
+-- change volume
+RegisterNetEvent('rsg-saloontender:client:changeVolume', function()
+    local dialog = exports['qr-input']:ShowInput({
+        header = 'Music Volume',
+        submitText = "Submit",
+        inputs = {
+            {
+                type = 'text', -- number doesn't accept decimals??
+                isRequired = true,
+                name = 'volume',
+                text = 'Min: 0.01 - Max: 1'
+            }
+        }
+    })
+    if dialog then
+        if not dialog.volume then return end
+        TriggerServerEvent('rsg-saloontender:server:changeVolume', dialog.volume, currentname, currentzone)
+    end
+end)
+
+-- pause music
+RegisterNetEvent('rsg-saloontender:client:pauseMusic', function()
+    TriggerServerEvent('rsg-saloontender:server:pauseMusic', currentname, currentzone)
+end)
+
+-- resume music
+RegisterNetEvent('rsg-saloontender:client:resumeMusic', function()
+    TriggerServerEvent('rsg-saloontender:server:resumeMusic', currentname, currentzone)
+end)
+
+-- stop music
+RegisterNetEvent('rsg-saloontender:client:stopMusic', function()
+    TriggerServerEvent('rsg-saloontender:server:stopMusic', currentname, currentzone)
+end)

@@ -100,7 +100,7 @@ end)
 -- saloon general storage
 RegisterNetEvent('rsg-saloontender:client:storage', function()
     local job = QRCore.Functions.GetPlayerData().job.name
-    local stashloc = currentlocation
+    local stashloc = currentname
     if job == Config.JobRequired then
         TriggerServerEvent("inventory:server:OpenInventory", "stash", stashloc, {
             maxweight = Config.StorageMaxWeight,

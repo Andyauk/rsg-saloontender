@@ -37,22 +37,22 @@ Config.SaloonWholesaleLocations = {
 }
 
 Config.SaloonWholesale = {
-	[1] = {
-		name = 'beer',
-		price = 0,
-		amount = 500,
-		info = {},
-		type = 'item',
-		slot = 1,
-	},
-	[2] = {
-		name = 'whiskey',
-		price = 0,
-		amount = 500,
-		info = {},
-		type = 'item',
-		slot = 2,
-	},
+    [1] = {
+        name = 'beer',
+        price = 0,
+        amount = 500,
+        info = {},
+        type = 'item',
+        slot = 1,
+    },
+    [2] = {
+        name = 'whiskey',
+        price = 0,
+        amount = 500,
+        info = {},
+        type = 'item',
+        slot = 2,
+    },
 }
 
 -----------------------------------------------------------------------------------

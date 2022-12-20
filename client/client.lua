@@ -138,16 +138,16 @@ end)
 -- saloon wholesale
 RegisterNetEvent('rsg-saloontender:client:openwholesale')
 AddEventHandler('rsg-saloontender:client:openwholesale', function()
-	local job = QRCore.Functions.GetPlayerData().job.name
-	if job == Config.JobRequired then
-		local ShopItems = {}
-		ShopItems.label = "Saloon Wholesale"
-		ShopItems.items = Config.SaloonWholesale
-		ShopItems.slots = #Config.SaloonWholesale
-		TriggerServerEvent("inventory:server:OpenInventory", "shop", "SaloonWholesale_"..math.random(1, 99), ShopItems)
-	else
-		QRCore.Functions.Notify('you don\'t have the required job', 'error')
-	end
+    local job = QRCore.Functions.GetPlayerData().job.name
+    if job == Config.JobRequired then
+        local ShopItems = {}
+        ShopItems.label = "Saloon Wholesale"
+        ShopItems.items = Config.SaloonWholesale
+        ShopItems.slots = #Config.SaloonWholesale
+        TriggerServerEvent("inventory:server:OpenInventory", "shop", "SaloonWholesale_"..math.random(1, 99), ShopItems)
+    else
+        QRCore.Functions.Notify('you don\'t have the required job', 'error')
+    end
 end)
 
 -----------------------------------------------------------------------------------

@@ -6,17 +6,20 @@ author 'RexShack#3041'
 description 'rsg-saloontender'
 
 client_scripts {
-	'client/client.lua'
+    'client/client.lua'
 }
 
 server_scripts {
-	'server/server.lua'
+    'server/server.lua'
 }
 
 shared_scripts {
-	'config.lua'
+    'config.lua'
 }
 
-dependency 'qr-core'
+dependencies {
+    'qr-core',
+    'qr-menu'
+}
 
 lua54 'yes'

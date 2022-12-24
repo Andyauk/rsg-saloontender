@@ -1,4 +1,4 @@
-local QRCore = exports['qr-core']:GetCoreObject()
+local RSGCore = exports['rsg-core']:GetCoreObject()
 local currentname
 local currentzone
 
@@ -7,7 +7,7 @@ local currentzone
 -- job prompts and blips
 Citizen.CreateThread(function()
     for saloontender, v in pairs(Config.SaloonTenderLocations) do
-        exports['qr-core']:createPrompt(v.location, v.coords, QRCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
+        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
             type = 'client',
             event = 'rsg-saloontender:client:mainmenu',
             args = { v.location, v.coords },
@@ -26,7 +26,7 @@ CreateThread(function()
     while true do
         local sleep = 0
         if LocalPlayer.state.isLoggedIn then
-            local job = QRCore.Functions.GetPlayerData().job.name
+            local job = RSGCore.Functions.GetPlayerData().job.name
             if job == Config.JobRequired then
                 for saloontender, v in pairs(Config.SaloonTenderLocations) do
                     if v.showmarker == true then
@@ -43,11 +43,11 @@ end)
 
 -- saloontender menu
 RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
-    local job = QRCore.Functions.GetPlayerData().job.name
+    local job = RSGCore.Functions.GetPlayerData().job.name
     if job == Config.JobRequired then
         currentname = name
         currentzone = zone
-        exports['qr-menu']:openMenu({
+        exports['rsg-menu']:openMenu({
             {
                 header = 'Saloon Tender',
                 isMenuHeader = true,
@@ -77,7 +77,7 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
                 txt = "",
                 icon = "fas fa-user-circle",
                 params = {
-                    event = 'qr-bossmenu:client:OpenMenu',
+                    event = 'rsg-bossmenu:client:OpenMenu',
                     isServer = false,
                     args = {},
                 }
@@ -86,12 +86,12 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
                 header = ">> Close Menu <<",
                 txt = '',
                 params = {
-                    event = 'qr-menu:closeMenu',
+                    event = 'rsg-menu:closeMenu',
                 }
             },
         })
     else
-        QRCore.Functions.Notify('you are not a Saloon Tender!', 'error')
+        RSGCore.Functions.Notify('you are not a Saloon Tender!', 'error')
     end
 end)
 
@@ -99,7 +99,7 @@ end)
 
 -- saloon general storage
 RegisterNetEvent('rsg-saloontender:client:storage', function()
-    local job = QRCore.Functions.GetPlayerData().job.name
+    local job = RSGCore.Functions.GetPlayerData().job.name
     local stashloc = currentname
     if job == Config.JobRequired then
         TriggerServerEvent("inventory:server:OpenInventory", "stash", stashloc, {
@@ -115,7 +115,7 @@ end)
 -- wholesale prompts and blips
 Citizen.CreateThread(function()
     for saloonwholesale, v in pairs(Config.SaloonWholesaleLocations) do
-        exports['qr-core']:createPrompt(v.location, v.coords, QRCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
+        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
             type = 'client',
             event = 'rsg-saloontender:client:openwholesale',
             args = { v.location },
@@ -134,7 +134,7 @@ CreateThread(function()
     while true do
         local sleep = 0
         if LocalPlayer.state.isLoggedIn then
-            local job = QRCore.Functions.GetPlayerData().job.name
+            local job = RSGCore.Functions.GetPlayerData().job.name
             if job == Config.JobRequired then
                 for saloontender, v in pairs(Config.SaloonWholesaleLocations) do
                     if v.showmarker == true then
@@ -150,7 +150,7 @@ end)
 -- saloon wholesale
 RegisterNetEvent('rsg-saloontender:client:openwholesale')
 AddEventHandler('rsg-saloontender:client:openwholesale', function()
-    local job = QRCore.Functions.GetPlayerData().job.name
+    local job = RSGCore.Functions.GetPlayerData().job.name
     if job == Config.JobRequired then
         local ShopItems = {}
         ShopItems.label = "Saloon Wholesale"
@@ -158,7 +158,7 @@ AddEventHandler('rsg-saloontender:client:openwholesale', function()
         ShopItems.slots = #Config.SaloonWholesale
         TriggerServerEvent("inventory:server:OpenInventory", "shop", "SaloonWholesale_"..math.random(1, 99), ShopItems)
     else
-        QRCore.Functions.Notify('you don\'t have the required job', 'error')
+        RSGCore.Functions.Notify('you don\'t have the required job', 'error')
     end
 end)
 
@@ -167,7 +167,7 @@ end)
 RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
     local name = currentname
     local zone = currentzone
-    exports['qr-menu']:openMenu({
+    exports['rsg-menu']:openMenu({
         {
             header = "💿 | DukeBox Menu",
             isMenuHeader = true,
@@ -228,7 +228,7 @@ RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
 end)
 
 RegisterNetEvent('rsg-saloontender:client:playMusic', function()
-    local dialog = exports['qr-input']:ShowInput({
+    local dialog = exports['rsg-input']:ShowInput({
         header = 'Song Selection',
         submitText = "Submit",
         inputs = {
@@ -248,7 +248,7 @@ end)
 
 -- change volume
 RegisterNetEvent('rsg-saloontender:client:changeVolume', function()
-    local dialog = exports['qr-input']:ShowInput({
+    local dialog = exports['rsg-input']:ShowInput({
         header = 'Music Volume',
         submitText = "Submit",
         inputs = {

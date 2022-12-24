@@ -1,4 +1,4 @@
-local QRCore = exports['qr-core']:GetCoreObject()
+local RSGCore = exports['rsg-core']:GetCoreObject()
 local xSound = exports.xsound
 local isPlaying = false
 local volume = Config.DukeBoxDefaultVolume

@@ -18,8 +18,8 @@ shared_scripts {
 }
 
 dependencies {
-    'qr-core',
-    'qr-menu',
+    'rsg-core',
+    'rsg-menu',
     'xsound'
 }
 

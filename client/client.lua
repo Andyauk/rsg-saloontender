@@ -21,24 +21,6 @@ Citizen.CreateThread(function()
     end
 end)
 
--- job draw marker if set to true in config
-CreateThread(function()
-    while true do
-        local sleep = 0
-        if LocalPlayer.state.isLoggedIn then
-            local job = RSGCore.Functions.GetPlayerData().job.name
-            if job == Config.JobRequired then
-                for saloontender, v in pairs(Config.SaloonTenderLocations) do
-                    if v.showmarker == true then
-                        Citizen.InvokeNative(0x2A32FAA57B937173, 0x07DCE236, v.coords, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 215, 0, 155, false, false, false, 1, false, false, false)
-                    end
-                end
-            end
-        end
-        Wait(sleep)
-    end
-end)
-
 -----------------------------------------------------------------------------------
 
 -- saloontender menu
@@ -126,24 +108,6 @@ Citizen.CreateThread(function()
             SetBlipScale(SaloonWholesaleBlip, Config.WholesaleBlip.blipScale)
             Citizen.InvokeNative(0x9CB1A1623062F402, SaloonWholesaleBlip, Config.WholesaleBlip.blipName)
         end
-    end
-end)
-
--- wholesale draw marker if set to true in config
-CreateThread(function()
-    while true do
-        local sleep = 0
-        if LocalPlayer.state.isLoggedIn then
-            local job = RSGCore.Functions.GetPlayerData().job.name
-            if job == Config.JobRequired then
-                for saloontender, v in pairs(Config.SaloonWholesaleLocations) do
-                    if v.showmarker == true then
-                        Citizen.InvokeNative(0x2A32FAA57B937173, 0x07DCE236, v.coords, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 215, 0, 155, false, false, false, 1, false, false, false)
-                    end
-                end
-            end
-        end
-        Wait(sleep)
     end
 end)
 

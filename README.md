@@ -10,6 +10,8 @@
 # Installation
 - ensure that the dependancies are added and started
 - add rsg-saloontender to your resources folder
+- add bossmenu jobs to the database table "management_funds"
+- add jobs to rsg-core\shared\jobs.lua
 
 # Starting the resource
 - add the following to your server.cfg file : ensure rsg-saloontender

@@ -1,4 +1,5 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
+local PlayerData = RSGCore.Functions.GetPlayerData()
 local currentname
 local currentzone
 
@@ -26,7 +27,7 @@ end)
 -- saloontender menu
 RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
     local job = RSGCore.Functions.GetPlayerData().job.name
-    if job == Config.JobRequired then
+    if job == name then
         currentname = name
         currentzone = zone
         exports['rsg-menu']:openMenu({
@@ -73,7 +74,7 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
             },
         })
     else
-        RSGCore.Functions.Notify('you are not a Saloon Tender!', 'error')
+        RSGCore.Functions.Notify('you are not authorised!', 'error')
     end
 end)
 
@@ -83,46 +84,12 @@ end)
 RegisterNetEvent('rsg-saloontender:client:storage', function()
     local job = RSGCore.Functions.GetPlayerData().job.name
     local stashloc = currentname
-    if job == Config.JobRequired then
+    if job == currentname then
         TriggerServerEvent("inventory:server:OpenInventory", "stash", stashloc, {
             maxweight = Config.StorageMaxWeight,
             slots = Config.StorageMaxSlots,
         })
         TriggerEvent("inventory:client:SetCurrentStash", stashloc)
-    end
-end)
-
------------------------------------------------------------------------------------
-
--- wholesale prompts and blips
-Citizen.CreateThread(function()
-    for saloonwholesale, v in pairs(Config.SaloonWholesaleLocations) do
-        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
-            type = 'client',
-            event = 'rsg-saloontender:client:openwholesale',
-            args = { v.location },
-        })
-        if v.showblip == true then
-            local SaloonWholesaleBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.coords)
-            SetBlipSprite(SaloonWholesaleBlip, GetHashKey(Config.WholesaleBlip.blipSprite), true)
-            SetBlipScale(SaloonWholesaleBlip, Config.WholesaleBlip.blipScale)
-            Citizen.InvokeNative(0x9CB1A1623062F402, SaloonWholesaleBlip, Config.WholesaleBlip.blipName)
-        end
-    end
-end)
-
--- saloon wholesale
-RegisterNetEvent('rsg-saloontender:client:openwholesale')
-AddEventHandler('rsg-saloontender:client:openwholesale', function()
-    local job = RSGCore.Functions.GetPlayerData().job.name
-    if job == Config.JobRequired then
-        local ShopItems = {}
-        ShopItems.label = "Saloon Wholesale"
-        ShopItems.items = Config.SaloonWholesale
-        ShopItems.slots = #Config.SaloonWholesale
-        TriggerServerEvent("inventory:server:OpenInventory", "shop", "SaloonWholesale_"..math.random(1, 99), ShopItems)
-    else
-        RSGCore.Functions.Notify('you don\'t have the required job', 'error')
     end
 end)
 

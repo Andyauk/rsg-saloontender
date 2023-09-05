@@ -30,49 +30,40 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
     if job == name then
         currentname = name
         currentzone = zone
-        exports['rsg-menu']:openMenu({
+        local options = {
             {
-                header = 'Saloon Tender',
-                isMenuHeader = true,
+                title = "Saloon Storage",
+                icon = "fa-solid fa-box-open",
+                event = "rsg-saloontender:client:storage",
+                args = {}
             },
             {
-                header = "Saloon Storage",
-                txt = "",
-                icon = "fas fa-box",
-                params = {
-                    event = 'rsg-saloontender:client:storage',
-                    isServer = false,
-                    args = {},
-                }
+                title = "Saloon Supplies",
+                icon = "fa-solid fa-store",
+                event = "rsg-saloontender:client:shop",
+                args = {}
             },
             {
-                header = "DukeBox",
-                txt = "",
-                icon = "fas fa-music",
-                params = {
-                    event = 'rsg-saloontender:client:musicmenu',
-                    isServer = false,
-                    args = {},
-                }
+                title = "DukeBox",
+                icon = "fa-solid fa-circle-play",
+                event = "rsg-saloontender:client:musicmenu",
+                args = {}
             },
             {
-                header = "Job Management",
-                txt = "",
+                title = "Job Management",
                 icon = "fas fa-user-circle",
-                params = {
-                    event = 'rsg-bossmenu:client:OpenMenu',
-                    isServer = false,
-                    args = {},
-                }
+                event = "rsg-bossmenu:client:OpenMenu",
+                args = {}
             },
-            {
-                header = ">> Close Menu <<",
-                txt = '',
-                params = {
-                    event = 'rsg-menu:closeMenu',
-                }
-            },
+        }
+
+        lib.registerContext({
+            id = "saloon_menu",
+            title = "Saloon Tender",
+            options = options
         })
+
+        lib.showContext("saloon_menu")
     else
         RSGCore.Functions.Notify('you are not authorised!', 'error')
     end
@@ -98,102 +89,66 @@ end)
 RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
     local name = currentname
     local zone = currentzone
-    exports['rsg-menu']:openMenu({
+    local options = {
         {
-            header = "💿 | DukeBox Menu",
-            isMenuHeader = true,
+            title = "Play Music",
+            icon = "fa-solid fa-circle-play",
+            event = "rsg-saloontender:client:playMusic",
+            args = {}
         },
         {
-            header = "🎶 | Play Music",
-            txt = "Enter a youtube URL",
-            params = {
-                event = "rsg-saloontender:client:playMusic",
-                isServer = false,
-                args = {},
-            }
+            title = "Pause Music",
+            icon = "fa-solid fa-store",
+            event = "rsg-saloontender:client:pauseMusic",
+            args = {}
         },
         {
-            header = "⏸️ | Pause Music",
-            txt = "Pause currently playing music",
-            params = {
-                event = "rsg-saloontender:client:pauseMusic",
-                isServer = false,
-                args = {},
-            }
+            title = "Resume Music",
+            icon = "fa-solid fa-rotate-right",
+            event = "rsg-saloontender:client:resumeMusic",
+            args = {}
         },
         {
-            header = "▶️ | Resume Music",
-            txt = "Resume playing paused music",
-            params = {
-                event = "rsg-saloontender:client:resumeMusic",
-                isServer = false,
-                args = {},
-            }
+            title = "Change Volume",
+            icon = "fa-solid fa-volume-high",
+            event = "rsg-saloontender:client:changeVolume",
+            args = {}
         },
         {
-            header = "🔈 | Change Volume",
-            txt = "Adjust the volume of the music",
-            params = {
-                event = "rsg-saloontender:client:changeVolume",
-                isServer = false,
-                args = {},
-            }
+            title = "Turn off music",
+            icon = "fa-solid fa-circle-stop",
+            event = "rsg-saloontender:client:stopMusic",
+            args = {}
         },
-        {
-            header = "❌ | Turn off music",
-            txt = "Stop the music & choose a new song",
-            params = {
-                event = "rsg-saloontender:client:stopMusic",
-                isServer = false,
-                args = {},
-            }
-        },
-        {
-            header = "<< Back",
-            txt = '',
-            params = {
-                event = 'rsg-saloontender:client:mainmenu',
-            }
-        },
+    }
+
+    lib.registerContext({
+        id = "dukebox_menu",
+        title = "Duke Box",
+        options = options
     })
+
+    lib.showContext("dukebox_menu")
 end)
 
 RegisterNetEvent('rsg-saloontender:client:playMusic', function()
-    local dialog = exports['rsg-input']:ShowInput({
-        header = 'Song Selection',
-        submitText = "Submit",
-        inputs = {
-            {
-                type = 'text',
-                isRequired = true,
-                name = 'song',
-                text = 'YouTube URL'
-            }
-        }
-    })
-    if dialog then
-        if not dialog.song then return end
-        TriggerServerEvent('rsg-saloontender:server:playMusic', dialog.song, currentname, currentzone)
+    local input = lib.inputDialog('Song Selection', {'YouTube URL'})
+    if not input then return end
+    local song = input[1]
+    if song then
+        TriggerServerEvent('rsg-saloontender:server:playMusic', song, currentname, currentzone)
     end
 end)
 
 -- change volume
 RegisterNetEvent('rsg-saloontender:client:changeVolume', function()
-    local dialog = exports['rsg-input']:ShowInput({
-        header = 'Music Volume',
-        submitText = "Submit",
-        inputs = {
-            {
-                type = 'text', -- number doesn't accept decimals??
-                isRequired = true,
-                name = 'volume',
-                text = 'Min: 0.01 - Max: 1'
-            }
-        }
+    local input = lib.inputDialog('Music Volume', {
+        {type = 'slider', label = 'Min: 0.01 - Max: 1', icon = {'far', 'music'}, required = true, default = 0.5, min = 0.01, max = 1, step = 0.01}
     })
-    if dialog then
-        if not dialog.volume then return end
-        TriggerServerEvent('rsg-saloontender:server:changeVolume', dialog.volume, currentname, currentzone)
+    if not input then return end
+    local volume = input[1]
+    if volume then
+        TriggerServerEvent('rsg-saloontender:server:changeVolume', volume, currentname, currentzone)
     end
 end)
 

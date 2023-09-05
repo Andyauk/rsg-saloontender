@@ -47,12 +47,14 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
                 title = "DukeBox",
                 icon = "fa-solid fa-circle-play",
                 event = "rsg-saloontender:client:musicmenu",
+                arrow = true,
                 args = {}
             },
             {
                 title = "Job Management",
                 icon = "fas fa-user-circle",
                 event = "rsg-bossmenu:client:OpenMenu",
+                arrow = true,
                 args = {}
             },
         }
@@ -118,6 +120,12 @@ RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
             title = "Turn off music",
             icon = "fa-solid fa-circle-stop",
             event = "rsg-saloontender:client:stopMusic",
+            args = {}
+        },
+        {
+            title = "Return",
+            icon = "fa-solid fa-angle-left",
+            event = "rsg-saloontender:client:mainmenu",
             args = {}
         },
     }

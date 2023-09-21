@@ -53,7 +53,7 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
             {
                 title = "Job Management",
                 icon = "fas fa-user-circle",
-                event = "rsg-bossmenu:client:OpenMenu",
+                event = "rsg-bossmenu:client:mainmenu",
                 arrow = true,
                 args = {}
             },

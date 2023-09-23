@@ -1,5 +1,6 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
 
+-- get shop items
 RegisterServerEvent('rsg-saloontendershop:server:GetShopItems')
 AddEventHandler('rsg-saloontendershop:server:GetShopItems', function(data)
     local src = source
@@ -10,8 +11,9 @@ AddEventHandler('rsg-saloontendershop:server:GetShopItems', function(data)
     end)
 end)
 
-RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:shopS', function(source, cb, currentweaponshop)
-    MySQL.query('SELECT * FROM saloontender_shop WHERE shopid = ?', {currentweaponshop}, function(result)
+-- shop stock
+RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:shopS', function(source, cb, currentsaloonshop)
+    MySQL.query('SELECT * FROM saloontender_shop WHERE shopid = ?', {currentsaloonshop}, function(result)
         if result[1] then
             cb(result)
         else
@@ -31,7 +33,7 @@ RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:Stock', function(s
     end)
 end)
 
--- refill weaponshop from saloontender stock
+-- refill stock
 RegisterServerEvent('rsg-saloontendershop:server:InvReFill')
 AddEventHandler('rsg-saloontendershop:server:InvReFill', function(location, item, qt, price, job)
     local src = source
@@ -54,6 +56,7 @@ AddEventHandler('rsg-saloontendershop:server:InvReFill', function(location, item
     TriggerClientEvent('RSGCore:Notify', src, Lang:t('lang_s26'), 'success')
 end)
 
+-- purchase item
 RegisterServerEvent('rsg-saloontendershop:server:PurchaseItem')
 AddEventHandler('rsg-saloontendershop:server:PurchaseItem', function(location, item, amount)
     local src = source
@@ -83,8 +86,9 @@ AddEventHandler('rsg-saloontendershop:server:PurchaseItem', function(location, i
     end)
 end)
 
-RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:GetMoney', function(source, cb, currentweaponshop)
-    MySQL.query('SELECT * FROM saloontender_shop WHERE shopid = ?', {currentweaponshop}, function(checkmoney)
+-- get money
+RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:GetMoney', function(source, cb, currentsaloonshop)
+    MySQL.query('SELECT * FROM saloontender_shop WHERE shopid = ?', {currentsaloonshop}, function(checkmoney)
         if checkmoney[1] then
             cb(checkmoney[1])
         else
@@ -93,6 +97,7 @@ RSGCore.Functions.CreateCallback('rsg-saloontendershop:server:GetMoney', functio
     end)
 end)
 
+-- withdraw money
 RegisterServerEvent('rsg-saloontendershop:server:Withdraw')
 AddEventHandler('rsg-saloontendershop:server:Withdraw', function(location, smoney)
     local src = source

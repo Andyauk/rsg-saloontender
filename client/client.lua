@@ -22,7 +22,7 @@ Citizen.CreateThread(function()
 end)
 
 ------------------------------------------------------------------------------------------------------
--- weapon main menu
+-- main menu
 ------------------------------------------------------------------------------------------------------
 
 RegisterNetEvent('rsg-saloontender:client:mainmenu', function(job)
@@ -175,7 +175,7 @@ RegisterNetEvent('rsg-saloontender:client:craftitem', function(title, category, 
 end)
 
 ------------------------------------------------------------------------------------------------------
--- saloon storage
+-- storage
 ------------------------------------------------------------------------------------------------------
 
 RegisterNetEvent('rsg-saloontender:client:storage', function()

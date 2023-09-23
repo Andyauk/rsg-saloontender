@@ -34,7 +34,7 @@ AddEventHandler('rsg-saloontender:server:finishcrafting', function(ingredients, 
         Player.Functions.RemoveItem(v.item, v.amount)
         TriggerClientEvent('inventory:client:ItemBox', src, RSGCore.Shared.Items[v.item], "remove")
     end
-    -- add stock to weaponsmith
+    -- add stock
     MySQL.query('SELECT * FROM saloontender_stock WHERE saloontender = ? AND item = ?',{job, receive} , function(result)
         if result[1] ~= nil then
             local stockadd = result[1].stock + giveamount

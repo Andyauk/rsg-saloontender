@@ -23,7 +23,7 @@ Citizen.CreateThread(function()
 end)
 
 -------------------------------------------------------------------------------------------
--- Menu
+-- menu
 -------------------------------------------------------------------------------------------
 
 RegisterNetEvent('rsg-saloontendershop:client:saloonshopMenu', function(jobaccess, shopid)
@@ -119,7 +119,7 @@ RegisterNetEvent("rsg-saloontendershop:client:Inv", function(store_inventory, da
 end)
 
 -------------------------------------------------------------------------------------------
--- saloon refill
+-- refill
 -------------------------------------------------------------------------------------------
 RegisterNetEvent("rsg-saloontendershop:client:InvReFull", function()
     RSGCore.Functions.TriggerCallback('rsg-saloontendershop:server:Stock', function(result)
@@ -170,7 +170,7 @@ RegisterNetEvent("rsg-saloontendershop:client:InvReFull", function()
 end)
 
 -------------------------------------------------------------------------------------------
--- saloon add items from inventory
+-- add items from inventory
 -------------------------------------------------------------------------------------------
 RegisterNetEvent('rsg-saloontendershop:client:InvReFillInput', function(data)
     local item = data.item
@@ -206,7 +206,7 @@ RegisterNetEvent('rsg-saloontendershop:client:InvReFillInput', function(data)
 end)
 
 -------------------------------------------------------------------------------------------
--- buy saloon items
+-- buy items
 -------------------------------------------------------------------------------------------
 RegisterNetEvent('rsg-saloontendershop:client:InvInput', function(data)
     local name = data.items
@@ -233,7 +233,7 @@ RegisterNetEvent('rsg-saloontendershop:client:InvInput', function(data)
 end)
 
 -------------------------------------------------------------------------------------------
--- saloon money
+-- money
 -------------------------------------------------------------------------------------------
 RegisterNetEvent("rsg-saloontendershop:client:CheckMoney", function()
     RSGCore.Functions.TriggerCallback('rsg-saloontendershop:server:GetMoney', function(checkmoney)
@@ -260,7 +260,7 @@ RegisterNetEvent("rsg-saloontendershop:client:CheckMoney", function()
 end)
 
 -------------------------------------------------------------------------------------------
--- saloon withdraw money
+-- withdraw money
 -------------------------------------------------------------------------------------------
 RegisterNetEvent('rsg-saloontendershop:client:Withdraw', function(checkmoney)
     local money = checkmoney.money

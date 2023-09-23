@@ -1,176 +1,191 @@
 local RSGCore = exports['rsg-core']:GetCoreObject()
-local PlayerData = RSGCore.Functions.GetPlayerData()
-local currentname
-local currentzone
+local options = {}
+local jobaccess
 
------------------------------------------------------------------------------------
-
--- job prompts and blips
+-------------------------------------------------------------------------------------------
+-- prompts and blips if needed
+-------------------------------------------------------------------------------------------
 Citizen.CreateThread(function()
-    for saloontender, v in pairs(Config.SaloonTenderLocations) do
-        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds['J'], 'Open ' .. v.name, {
+    for _, v in pairs(Config.SaloonCraftingPoint) do
+        exports['rsg-core']:createPrompt(v.location, v.coords, RSGCore.Shared.Keybinds[Config.Keybind], Lang:t('lang_0'), {
             type = 'client',
             event = 'rsg-saloontender:client:mainmenu',
-            args = { v.location, v.coords },
+            args = { v.job },
         })
         if v.showblip == true then
-            local SaloonTenderBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.coords)
-            SetBlipSprite(SaloonTenderBlip, GetHashKey(Config.Blip.blipSprite), true)
-            SetBlipScale(SaloonTenderBlip, Config.Blip.blipScale)
-            Citizen.InvokeNative(0x9CB1A1623062F402, SaloonTenderBlip, Config.Blip.blipName)
+            local CraftMenuBlip = Citizen.InvokeNative(0x554D9D53F696D002, 1664425300, v.coords)
+            SetBlipSprite(CraftMenuBlip,  joaat(Config.SaloonBlip.blipSprite), true)
+            SetBlipScale(Config.SaloonBlip.blipScale, 0.2)
+            Citizen.InvokeNative(0x9CB1A1623062F402, CraftMenuBlip, Config.SaloonBlip.blipName)
         end
     end
 end)
 
------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+-- weapon main menu
+------------------------------------------------------------------------------------------------------
 
--- saloontender menu
-RegisterNetEvent('rsg-saloontender:client:mainmenu', function(name, zone)
-    local job = RSGCore.Functions.GetPlayerData().job.name
-    if job == name then
-        currentname = name
-        currentzone = zone
-        local options = {
-            {
-                title = "Saloon Storage",
-                icon = "fa-solid fa-box-open",
-                event = "rsg-saloontender:client:storage",
-                args = {}
-            },
-            {
-                title = "Saloon Supplies",
-                icon = "fa-solid fa-store",
-                event = "rsg-saloontender:client:shop",
-                args = {}
-            },
-            {
-                title = "DukeBox",
-                icon = "fa-solid fa-circle-play",
-                event = "rsg-saloontender:client:musicmenu",
-                arrow = true,
-                args = {}
-            },
-            {
-                title = "Job Management",
-                icon = "fas fa-user-circle",
-                event = "rsg-bossmenu:client:mainmenu",
-                arrow = true,
-                args = {}
-            },
-        }
-
+RegisterNetEvent('rsg-saloontender:client:mainmenu', function(job)
+    local PlayerData = RSGCore.Functions.GetPlayerData()
+    local playerjob = PlayerData.job.name
+    jobaccess = job
+    if playerjob == jobaccess then
         lib.registerContext({
-            id = "saloon_menu",
-            title = "Saloon Tender",
-            options = options
+            id = 'saloon_mainmenu',
+            title = Lang:t('lang_1'),
+            options = {
+                {
+                    title = Lang:t('lang_2'),
+                    description = Lang:t('lang_3'),
+                    icon = 'fa-solid fa-screwdriver-wrench',
+                    event = 'rsg-saloontender:client:craftingmenu',
+                    arrow = true
+                },
+                {
+                    title = Lang:t('lang_4'),
+                    description = Lang:t('lang_5'),
+                    icon = 'fas fa-box',
+                    event = 'rsg-saloontender:client:storage',
+                    arrow = true
+                },
+                {
+                    title = Lang:t('lang_6'),
+                    description = Lang:t('lang_7'),
+                    icon = 'fa-solid fa-user-tie',
+                    event = 'rsg-bossmenu:client:mainmenu',
+                    arrow = true
+                },
+            }
         })
-
-        lib.showContext("saloon_menu")
+        lib.showContext("saloon_mainmenu")
     else
-        RSGCore.Functions.Notify('you are not authorised!', 'error')
+        RSGCore.Functions.Notify(Lang:t('lang_8'), 'error')
     end
 end)
 
------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+-- crafting menu
+------------------------------------------------------------------------------------------------------
 
--- saloon general storage
+-- create a table to store menu options by category
+local CategoryMenus = {}
+
+-- iterate through recipes and organize them by category
+for _, v in ipairs(Config.SaloonCrafting) do
+    local IngredientsMetadata = {}
+
+    for i, ingredient in ipairs(v.ingredients) do
+        table.insert(IngredientsMetadata, { label = RSGCore.Shared.Items[ingredient.item].label, value = ingredient.amount })
+    end
+    local option = {
+        title = v.title,
+        icon = v.icon,
+        event = 'rsg-saloontender:client:checkingredients',
+        metadata = IngredientsMetadata,
+        args = {
+            title = v.title,
+            category = v.category,
+            ingredients = v.ingredients,
+            crafttime = v.crafttime,
+            receive = v.receive,
+            giveamount = v.giveamount
+        }
+    }
+
+    -- check if a menu already exists for this category
+    if not CategoryMenus[v.category] then
+        CategoryMenus[v.category] = {
+            id = 'crafting_menu_' .. v.category,
+            title = v.category,
+            menu = 'saloon_mainmenu',
+            onBack = function() end,
+            options = { option }
+        }
+    else
+        table.insert(CategoryMenus[v.category].options, option)
+    end
+end
+
+-- log menu events by category
+for category, MenuData in pairs(CategoryMenus) do
+    RegisterNetEvent('rsg-saloontender:client:' .. category)
+    AddEventHandler('rsg-saloontender:client:' .. category, function()
+        lib.registerContext(MenuData)
+        lib.showContext(MenuData.id)
+    end)
+end
+
+-- main event to open main menu
+RegisterNetEvent('rsg-saloontender:client:craftingmenu')
+AddEventHandler('rsg-saloontender:client:craftingmenu', function()
+    -- show main menu with categories
+    local Menu = {
+        id = 'crafting_menu',
+        title = Lang:t('lang_9'),
+        menu = 'saloon_mainmenu',
+        onBack = function() end,
+        options = {}
+    }
+
+    for category, MenuData in pairs(CategoryMenus) do
+        table.insert(Menu.options, {
+            title = category,
+            description = Lang:t('lang_10') .. category,
+            icon = 'fa-solid fa-pen-ruler',
+            event = 'rsg-saloontender:client:' .. category,
+            arrow = true
+        })
+    end
+
+    lib.registerContext(Menu)
+    lib.showContext(Menu.id)
+end)
+
+------------------------------------------------------------------------------------------------------
+-- do crafting stuff
+------------------------------------------------------------------------------------------------------
+
+-- check player has the ingredients to craft
+RegisterNetEvent('rsg-saloontender:client:checkingredients', function(data)
+    RSGCore.Functions.TriggerCallback('rsg-saloontender:server:checkingredients', function(hasRequired)
+    if (hasRequired) then
+        if Config.Debug == true then
+            print("passed")
+        end
+        TriggerEvent('rsg-saloontender:client:craftitem', data.title, data.category, data.ingredients, tonumber(data.crafttime), data.receive, data.giveamount)
+    else
+        if Config.Debug == true then
+            print("failed")
+        end
+        return
+    end
+    end, data.ingredients)
+end)
+
+-- do crafting
+RegisterNetEvent('rsg-saloontender:client:craftitem', function(title, category, ingredients, crafttime, receive, giveamount)
+    RSGCore.Functions.Progressbar('do-crafting', Lang:t('lang_11')..title..' '..category, crafttime, false, true, {
+        disableMovement = true,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {}, {}, {}, function() -- Done
+        TriggerServerEvent('rsg-saloontender:server:finishcrafting', ingredients, receive, giveamount, jobaccess)
+    end)
+end)
+
+------------------------------------------------------------------------------------------------------
+-- saloon storage
+------------------------------------------------------------------------------------------------------
+
 RegisterNetEvent('rsg-saloontender:client:storage', function()
-    local job = RSGCore.Functions.GetPlayerData().job.name
-    local stashloc = currentname
-    if job == currentname then
-        TriggerServerEvent("inventory:server:OpenInventory", "stash", stashloc, {
+    local PlayerData = RSGCore.Functions.GetPlayerData()
+    local playerjob = PlayerData.job.name
+    if playerjob == jobaccess then
+        TriggerServerEvent("inventory:server:OpenInventory", "stash", jobaccess, {
             maxweight = Config.StorageMaxWeight,
             slots = Config.StorageMaxSlots,
         })
-        TriggerEvent("inventory:client:SetCurrentStash", stashloc)
+        TriggerEvent("inventory:client:SetCurrentStash", jobaccess)
     end
-end)
-
------------------------------------------------------------------------------------
-
-RegisterNetEvent('rsg-saloontender:client:musicmenu', function()
-    local name = currentname
-    local zone = currentzone
-    local options = {
-        {
-            title = "Play Music",
-            icon = "fa-solid fa-circle-play",
-            event = "rsg-saloontender:client:playMusic",
-            args = {}
-        },
-        {
-            title = "Pause Music",
-            icon = "fa-solid fa-store",
-            event = "rsg-saloontender:client:pauseMusic",
-            args = {}
-        },
-        {
-            title = "Resume Music",
-            icon = "fa-solid fa-rotate-right",
-            event = "rsg-saloontender:client:resumeMusic",
-            args = {}
-        },
-        {
-            title = "Change Volume",
-            icon = "fa-solid fa-volume-high",
-            event = "rsg-saloontender:client:changeVolume",
-            args = {}
-        },
-        {
-            title = "Turn off music",
-            icon = "fa-solid fa-circle-stop",
-            event = "rsg-saloontender:client:stopMusic",
-            args = {}
-        },
-        {
-            title = "Return",
-            icon = "fa-solid fa-angle-left",
-            event = "rsg-saloontender:client:mainmenu",
-            args = {}
-        },
-    }
-
-    lib.registerContext({
-        id = "dukebox_menu",
-        title = "Duke Box",
-        options = options
-    })
-
-    lib.showContext("dukebox_menu")
-end)
-
-RegisterNetEvent('rsg-saloontender:client:playMusic', function()
-    local input = lib.inputDialog('Song Selection', {'YouTube URL'})
-    if not input then return end
-    local song = input[1]
-    if song then
-        TriggerServerEvent('rsg-saloontender:server:playMusic', song, currentname, currentzone)
-    end
-end)
-
--- change volume
-RegisterNetEvent('rsg-saloontender:client:changeVolume', function()
-    local input = lib.inputDialog('Music Volume', {
-        {type = 'slider', label = 'Min: 0.01 - Max: 1', icon = {'far', 'music'}, required = true, default = 0.5, min = 0.01, max = 1, step = 0.01}
-    })
-    if not input then return end
-    local volume = input[1]
-    if volume then
-        TriggerServerEvent('rsg-saloontender:server:changeVolume', volume, currentname, currentzone)
-    end
-end)
-
--- pause music
-RegisterNetEvent('rsg-saloontender:client:pauseMusic', function()
-    TriggerServerEvent('rsg-saloontender:server:pauseMusic', currentname, currentzone)
-end)
-
--- resume music
-RegisterNetEvent('rsg-saloontender:client:resumeMusic', function()
-    TriggerServerEvent('rsg-saloontender:server:resumeMusic', currentname, currentzone)
-end)
-
--- stop music
-RegisterNetEvent('rsg-saloontender:client:stopMusic', function()
-    TriggerServerEvent('rsg-saloontender:server:stopMusic', currentname, currentzone)
 end)

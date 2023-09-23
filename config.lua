@@ -1,36 +1,183 @@
 Config = {}
 
--- debug
-Config.Debug = false
-
--- settings
-Config.StorageMaxWeight = 4000000
-Config.StorageMaxSlots = 48
-Config.DukeBoxDefaultVolume = 0.5 -- music default volume 0.01 - 1
-Config.DukeBoxRadius = 40 -- music radius
-
------------------------------------------------------------------------------------
-
--- job blip
-Config.Blip = {
-    blipName = 'Saloon', -- Config.Blip.blipName
+-- saloon blip settings
+Config.SaloonBlip = {
+    blipName = 'Saloon Crafting', -- Config.Blip.blipName
     blipSprite = 'blip_saloon', -- Config.Blip.blipSprite
     blipScale = 0.2 -- Config.Blip.blipScale
 }
 
--- job prompt locations
-Config.SaloonTenderLocations = {
-    {name = 'Valentine Saloon',         location = 'valsaloontender',      coords = vector3(-313.5073, 805.80718, 118.98068), showblip = true, showmarker = true}, --valentine
-    {name = 'Blackwater Saloon',        location = 'blasaloontender',      coords = vector3(-817.5921, -1319.085, 43.678947), showblip = true, showmarker = true}, --blackwater
-    {name = 'Rhodes Saloon',            location = 'rhosaloontender',      coords = vector3(1340.1748, -1374.819, 80.480606), showblip = true, showmarker = true}, --rhodes
-    {name = 'Saint Denis Saloon 1',     location = 'stdenissaloontender1', coords = vector3(2792.3723, -1168.412, 47.932285), showblip = true, showmarker = true}, --saint denis
-    {name = 'Saint Denis Saloon 2',     location = 'stdenissaloontender2', coords = vector3(2639.8435, -1224.268, 53.380401), showblip = true, showmarker = true}, --saint denis
-    {name = 'Van Horn Saloon',          location = 'vansaloontender',      coords = vector3(2947.8439, 528.06262, 45.338794), showblip = true, showmarker = true}, --van horn
-    {name = 'Armadillo Saloon',         location = 'armsaloontender',      coords = vector3(-3699.808, -2594.406, -13.31987), showblip = true, showmarker = true}, --armadillo
-    {name = 'Tumbleweed Saloon',        location = 'tumsaloontender',      coords = vector3(-5518.478, -2906.511, -1.751306), showblip = true, showmarker = true}, --tumbleweed
-    {name = 'Lemoyne Speakeasy',        location = 'moonsaloontender1',    coords = vector3(1778.7017, -802.4389, 188.95924), showblip = false, showmarker = true}, --lemoyne speakeasy
-    {name = 'New Austin Speakeasy',     location = 'moonsaloontender2',    coords = vector3(-2785.652, -3060.887, -12.34042), showblip = false, showmarker = true}, --new austin speakeasy
-    {name = 'Cattail Pond Speakeasy',   location = 'moonsaloontender3',    coords = vector3(-1086.129, 694.07788, 80.594093), showblip = false, showmarker = true}, --cattail pond speakeasy
-    {name = 'Hanover Speakeasy',        location = 'moonsaloontender4',    coords = vector3(1614.2941, 837.96038, 121.30193), showblip = false, showmarker = true}, --hanover speakeasy
-    {name = 'Manzanita Post Speakeasy', location = 'moonsaloontender5',    coords = vector3(-1850.383, -1739, 85.615165),     showblip = false, showmarker = true}, --manzanita post speakeasy
+-- blacksmith shop blip settings
+Config.ShopBlip = {
+    blipName = 'Saloon Shop', -- Config.Blip.blipName
+    blipSprite = 'blip_shop_store', -- Config.Blip.blipSprite
+    blipScale = 0.2 -- Config.Blip.blipScale
+}
+
+-- settings
+Config.StorageMaxWeight = 4000000
+Config.StorageMaxSlots = 48
+Config.Debug = false
+Config.Keybind = 'J'
+
+-- saloon crafting locations
+Config.SaloonCraftingPoint = {
+
+    {   -- valentine
+        name = 'Saloon Crafting',
+        location = 'valsaloontender',
+        coords = vector3(-313.7462, 806.18127, 118.98072),
+        job = 'valsaloontender',
+        showblip = true
+    },
+    {   -- blackwater
+        name = 'Saloon Crafting',
+        location = 'blasaloontender',
+        coords = vector3(-819.3729, -1319.572, 43.678916),
+        job = 'blasaloontender',
+        showblip = true
+    },
+    {   -- rhodes
+        name = 'Saloon Crafting',
+        location = 'rhosaloontender',
+        coords = vector3(1338.6545, -1374.345, 80.480628),
+        job = 'rhosaloontender',
+        showblip = true
+    },
+    {   -- saint denis (1)
+        name = 'Saloon Crafting',
+        location = 'stdenissaloontender1',
+        coords = vector3(2792.2316, -1167.343, 47.932292),
+        job = 'stdenissaloontender1',
+        showblip = true
+    },
+    {   -- saint denis (2)
+        name = 'Saloon Crafting',
+        location = 'stdenissaloontender2',
+        coords = vector3(2640.2575, -1225.084, 53.380378),
+        job = 'stdenissaloontender2',
+        showblip = true
+    },
+    {   -- van horn
+        name = 'Saloon Crafting',
+        location = 'vansaloontender',
+        coords = vector3(2948.6765, 529.04693, 45.332336),
+        job = 'vansaloontender',
+        showblip = true
+    },
+    {   -- armadillo
+        name = 'Saloon Crafting',
+        location = 'armsaloontender',
+        coords = vector3(-3698.504, -2594.319, -13.31987),
+        job = 'armsaloontender',
+        showblip = true
+    },
+    {   -- tumbleweed
+        name = 'Saloon Crafting',
+        location = 'tumsaloontender',
+        coords = vector3(-5519.204, -2905.65, -1.751305),
+        job = 'tumsaloontender',
+        showblip = true
+    },
+
+}
+
+-- saloon shops
+Config.SaloonShops = {
+
+    {
+        shopid = 'valsaloonshop',
+        shopname = 'Valentine Saloon Shop',
+        coords = vector3(-311.6449, 806.24963, 118.97999),
+        jobaccess = 'valsaloontender',
+        showblip = true
+    },
+    {
+        shopid = 'blasaloonshop',
+        shopname = 'Blackwater Saloon Shop',
+        coords = vector3(-815.8156, -1319.478, 43.678951),
+        jobaccess = 'blasaloontender',
+        showblip = true
+    },
+    {
+        shopid = 'rhosaloonshop',
+        shopname = 'Rhodes Saloon Shop',
+        coords = vector3(1341.9393, -1375.176, 80.480659),
+        jobaccess = 'rhosaloontender',
+        showblip = true
+    },
+    {
+        shopid = 'stdenissaloonshop1',
+        shopname = 'Saint Denis Saloon Shop',
+        coords = vector3(2793.6767, -1169.249, 47.919883),
+        jobaccess = 'stdenissaloontender1',
+        showblip = true
+    },
+    {
+        shopid = 'stdenissaloonshop2',
+        shopname = 'Saint Denis Saloon Shop',
+        coords = vector3(2637.9946, -1224.823, 53.380378),
+        jobaccess = 'stdenissaloontender2',
+        showblip = true
+    },
+    {
+        shopid = 'vansaloonshop',
+        shopname = 'Van Horn Saloon Shop',
+        coords = vector3(2948.0925, 526.24456, 45.328735),
+        jobaccess = 'vansaloontender',
+        showblip = true
+    },
+    {
+        shopid = 'armsaloonshop',
+        shopname = 'Armadillo Saloon Shop',
+        coords = vector3(-3701.776, -2594.205, -13.31987),
+        jobaccess = 'armsaloontender',
+        showblip = true
+    },
+    {
+        shopid = 'tumsaloonshop',
+        shopname = 'Tumbleweed Saloon Shop',
+        coords = vector3(-5517.493, -2907.832, -1.751305),
+        jobaccess = 'tumsaloontender',
+        showblip = true
+    },
+}
+
+-- saloon crafting
+Config.SaloonCrafting = {
+
+	-- drinks
+    {
+        title =  'Beer',
+        category = 'Drinks',
+        crafttime = 30000,
+        icon = 'fa-solid fa-screwdriver-wrench',
+        ingredients = { 
+            [1] = { item = "malt",   amount = 1 },
+            [2] = { item = "hops",   amount = 1 },
+			[3] = { item = "yeast",  amount = 1 },
+			[4] = { item = "water",  amount = 1 },
+			[5] = { item = "bottle", amount = 1 },
+        },
+        receive = "beer",
+        giveamount = 1
+    },
+
+	-- food
+    {
+        title =  'Stew',
+        category = 'Food',
+        crafttime = 30000,
+        icon = 'fa-solid fa-screwdriver-wrench',
+        ingredients = { 
+            [1] = { item = "raw_meat", amount = 1 },
+            [2] = { item = "carrot",   amount = 1 },
+			[3] = { item = "broccoli", amount = 1 },
+			[4] = { item = "potato",   amount = 1 },
+			[5] = { item = "water",    amount = 1 },
+        },
+        receive = "stew",
+        giveamount = 1
+    },
+
 }

@@ -1,5 +1,9 @@
 Config = {}
 
+-- Inventory Images
+Config.img = "rsg-inventory/html/images/"
+
+
 -- saloon blip settings
 Config.SaloonBlip = {
     blipName = 'Saloon Crafting', -- Config.Blip.blipName

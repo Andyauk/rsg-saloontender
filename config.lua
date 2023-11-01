@@ -150,7 +150,7 @@ Config.SaloonShops = {
 -- saloon crafting
 Config.SaloonCrafting = {
 
-	-- drinks
+    -- drinks
     {
         title =  'Beer',
         category = 'Drinks',
@@ -159,26 +159,26 @@ Config.SaloonCrafting = {
         ingredients = { 
             [1] = { item = "malt",   amount = 1 },
             [2] = { item = "hops",   amount = 1 },
-			[3] = { item = "yeast",  amount = 1 },
-			[4] = { item = "water",  amount = 1 },
-			[5] = { item = "bottle", amount = 1 },
+            [3] = { item = "yeast",  amount = 1 },
+            [4] = { item = "water",  amount = 1 },
+            [5] = { item = "bottle", amount = 1 },
         },
         receive = "beer",
         giveamount = 1
     },
 
-	-- food
+    -- food
     {
         title =  'Stew',
         category = 'Food',
         crafttime = 30000,
         icon = 'fa-solid fa-screwdriver-wrench',
         ingredients = { 
-            [1] = { item = "raw_meat", amount = 1 },
-            [2] = { item = "carrot",   amount = 1 },
-			[3] = { item = "broccoli", amount = 1 },
-			[4] = { item = "potato",   amount = 1 },
-			[5] = { item = "water",    amount = 1 },
+            [1] = { item = "provision_meat_game", amount = 1 },
+            [2] = { item = "carrot",              amount = 1 },
+            [3] = { item = "broccoli",            amount = 1 },
+            [4] = { item = "potato",              amount = 1 },
+            [5] = { item = "water",               amount = 1 },
         },
         receive = "stew",
         giveamount = 1

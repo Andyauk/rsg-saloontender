@@ -198,11 +198,11 @@ RegisterNetEvent('rsg-saloontendershop:client:InvReFillInput', function(data)
         return
     end
     
-	if stock >= tonumber(input[1]) and tonumber(input[2]) ~= nil then
-		TriggerServerEvent('rsg-saloontendershop:server:InvReFill', currentsaloonshop, item, input[1], tonumber(input[2]), currentjob)
-	else
-		RSGCore.Functions.Notify(Lang:t('lang_s19'), 'error')
-	end
+    if stock >= tonumber(input[1]) and tonumber(input[2]) ~= nil then
+        TriggerServerEvent('rsg-saloontendershop:server:InvReFill', currentsaloonshop, item, input[1], tonumber(input[2]), currentjob)
+    else
+        RSGCore.Functions.Notify(Lang:t('lang_s19'), 'error')
+    end
 end)
 
 -------------------------------------------------------------------------------------------

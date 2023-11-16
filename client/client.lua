@@ -74,7 +74,7 @@ local CategoryMenus = {}
 for _, v in ipairs(Config.SaloonCrafting) do
     local IngredientsMetadata = {}
     local setheader = RSGCore.Shared.Items[tostring(v.receive)].label
-    local itemimg = "nui://"..Config.img..RSGCore.Shared.Items[tostring(v.receive)].image
+    local itemimg = "nui://"..Config.Img..RSGCore.Shared.Items[tostring(v.receive)].image
     for i, ingredient in ipairs(v.ingredients) do
         table.insert(IngredientsMetadata, { label = RSGCore.Shared.Items[ingredient.item].label, value = ingredient.amount })
     end

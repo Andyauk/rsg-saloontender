@@ -1,7 +1,7 @@
 Config = {}
 
 -- Inventory Images
-Config.img = "rsg-inventory/html/images/"
+Config.Img = "rsg-inventory/html/images/"
 
 
 -- saloon blip settings
@@ -174,11 +174,11 @@ Config.SaloonCrafting = {
         crafttime = 30000,
         icon = 'fa-solid fa-screwdriver-wrench',
         ingredients = { 
-            [1] = { item = "provision_meat_game", amount = 1 },
-            [2] = { item = "carrot",              amount = 1 },
-            [3] = { item = "broccoli",            amount = 1 },
-            [4] = { item = "potato",              amount = 1 },
-            [5] = { item = "water",               amount = 1 },
+            [1] = { item = "raw_meat", amount = 1 },
+            [2] = { item = "carrot",   amount = 1 },
+            [3] = { item = "broccoli", amount = 1 },
+            [4] = { item = "potato",   amount = 1 },
+            [5] = { item = "water",    amount = 1 },
         },
         receive = "stew",
         giveamount = 1

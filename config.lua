@@ -152,10 +152,8 @@ Config.SaloonCrafting = {
 
     -- drinks
     {
-        title =  'Beer',
         category = 'Drinks',
         crafttime = 30000,
-        icon = 'fa-solid fa-screwdriver-wrench',
         ingredients = { 
             [1] = { item = "malt",   amount = 1 },
             [2] = { item = "hops",   amount = 1 },
@@ -169,10 +167,8 @@ Config.SaloonCrafting = {
 
     -- food
     {
-        title =  'Stew',
         category = 'Food',
         crafttime = 30000,
-        icon = 'fa-solid fa-screwdriver-wrench',
         ingredients = { 
             [1] = { item = "raw_meat", amount = 1 },
             [2] = { item = "carrot",   amount = 1 },

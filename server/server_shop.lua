@@ -53,7 +53,7 @@ AddEventHandler('rsg-saloontendershop:server:InvReFill', function(location, item
             MySQL.insert('INSERT INTO saloontender_stock (`saloontender`, `item`, `stock`) VALUES (?, ?, ?);', {job, item, qt})
         end
     end)
-    TriggerClientEvent('RSGCore:Notify', src, Lang:t('lang_s26'), 'success')
+    TriggerClientEvent('ox_lib:notify', source, {title = 'Success', description = Lang:t('lang_s26'), type = 'success', duration = 5000 })
 end)
 
 -- purchase item
@@ -77,11 +77,11 @@ AddEventHandler('rsg-saloontendershop:server:PurchaseItem', function(location, i
                         local moneymarket = data2[1].money + price
                         MySQL.update('UPDATE saloontender_shop SET money = ? WHERE shopid = ?',{moneymarket, location})
                     end)
-                    TriggerClientEvent('RSGCore:Notify', src, Lang:t('lang_s27').." "..amount.."x "..RSGCore.Shared.Items[item].label, 'success')
+                    TriggerClientEvent('ox_lib:notify', source, {title = Lang:t('lang_s27'), description = amount.."x "..RSGCore.Shared.Items[item].label, type = 'success', duration = 5000 })
                 end
             end)
-        else 
-            TriggerClientEvent('RSGCore:Notify', src, Lang:t('lang_s28'), 'error')
+        else
+            TriggerClientEvent('ox_lib:notify', source, {title = 'Error', description = Lang:t('lang_s28'), type = 'error', duration = 5000 })
         end
     end)
 end)

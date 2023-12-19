@@ -44,7 +44,7 @@ RSGCore.Functions.CreateCallback('rsg-saloontender:server:checkingredients', fun
                 cb(true)
             end
         else
-            TriggerClientEvent('RSGCore:Notify', src, Lang:t('lang_12'), 'error')
+            TriggerClientEvent('ox_lib:notify', source, {title = 'Error', description = Lang:t('lang_12'), type = 'error', duration = 5000 })
             cb(false)
             return
         end

@@ -59,7 +59,7 @@ RegisterNetEvent('rsg-saloontender:client:mainmenu', function(job)
         })
         lib.showContext("saloon_mainmenu")
     else
-        RSGCore.Functions.Notify(Lang:t('lang_8'), 'error')
+        lib.notify({ title = 'Error', description = Lang:t('lang_8'), type = 'error', duration = 5000 })
     end
 end)
 

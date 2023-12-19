@@ -201,7 +201,7 @@ RegisterNetEvent('rsg-saloontendershop:client:InvReFillInput', function(data)
     if stock >= tonumber(input[1]) and tonumber(input[2]) ~= nil then
         TriggerServerEvent('rsg-saloontendershop:server:InvReFill', currentsaloonshop, item, input[1], tonumber(input[2]), currentjob)
     else
-        RSGCore.Functions.Notify(Lang:t('lang_s19'), 'error')
+        lib.notify({ title = 'Error', description = Lang:t('lang_s19'), type = 'error', duration = 5000 })
     end
 end)
 
@@ -228,7 +228,7 @@ RegisterNetEvent('rsg-saloontendershop:client:InvInput', function(data)
     if stock >= tonumber(input[1]) then
         TriggerServerEvent('rsg-saloontendershop:server:PurchaseItem', currentsaloonshop, name, input[1])
     else
-        RSGCore.Functions.Notify((Lang:t('lang_s20')), 'error')
+        lib.notify({ title = 'Error', description = Lang:t('lang_s20'), type = 'error', duration = 5000 })
     end
 end)
 
@@ -284,6 +284,6 @@ RegisterNetEvent('rsg-saloontendershop:client:Withdraw', function(checkmoney)
     if money >= tonumber(input[1]) then
         TriggerServerEvent('rsg-saloontendershop:server:Withdraw', currentsaloonshop, tonumber(input[1]))
     else
-        RSGCore.Functions.Notify((Lang:t('lang_s20')), 'error')
+        lib.notify({ title = 'Error', description = Lang:t('lang_s20'), type = 'error', duration = 5000 })
     end
 end)
